@@ -94,8 +94,10 @@ class Table(object):
             for j in range(8):
                 if self.matrix[i][j] != None:
                     print(self.matrix[i][j].symbol, end=' ')
+                elif (i + j) % 2 == 0:
+                    print("⬜ ", end="")
                 else:
-                    print(". ", end="")
+                    print("⬛ ", end="")
             print()
 
 class Game(object):
