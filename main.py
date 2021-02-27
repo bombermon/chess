@@ -11,7 +11,7 @@ class Chess_figure(object):
 class King(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
-        super.__init__(Table, pos_y, pos_x, color)
+        super().__init__(Table, pos_y, pos_x, color)
         self.type = "King"
         if self.color == "W":
             self.symbol = "♔"
@@ -22,7 +22,7 @@ class King(Chess_figure):
 class Queen(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
-        super.__init__(Table, pos_y, pos_x, color)
+        super().__init__(Table, pos_y, pos_x, color)
         self.type = "King"
         if self.color == "W":
             self.symbol = "♕"
@@ -33,7 +33,7 @@ class Queen(Chess_figure):
 class Rook(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
-        super.__init__(Table, pos_y, pos_x, color)
+        super().__init__(Table, pos_y, pos_x, color)
         self.type = "King"
         if self.color == "W":
             self.symbol = "♖"
@@ -44,7 +44,7 @@ class Rook(Chess_figure):
 class Bishop(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
-        super.__init__(Table, pos_y, pos_x, color)
+        super().__init__(Table, pos_y, pos_x, color)
         self.type = "King"
         if self.color == "W":
             self.symbol = "♗"
@@ -55,7 +55,7 @@ class Bishop(Chess_figure):
 class Knight(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
-        super.__init__(Table, pos_y, pos_x, color)
+        super().__init__(Table, pos_y, pos_x, color)
         self.type = "King"
         if self.color == "W":
             self.symbol = "♘"
@@ -66,7 +66,7 @@ class Knight(Chess_figure):
 class Pawn(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
-        super.__init__(Table, pos_y, pos_x, color)
+        super().__init__(Table, pos_y, pos_x, color)
         self.type = "King"
         if self.color == "W":
             self.symbol = "♙"
@@ -93,4 +93,4 @@ class Game(object):
         self.table = Table()
         self.turn = 1
 
-game1 = Game
+game1 = Game()
