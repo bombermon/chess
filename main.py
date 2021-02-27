@@ -87,6 +87,17 @@ class Table(object):
     [Pawn(self, 6, 0,"W"), Pawn(self, 6, 1,"W"), Pawn(self, 6, 2,"W"), Pawn(self, 6, 3,"W"), Pawn(self, 6, 4,"W"), Pawn(self, 6, 5,"W"), Pawn(self, 6, 6,"W"), Pawn(self, 6, 7,"W")],
     [Rook(self, 7, 0, "W"), Knight(self, 7, 1, "W"), Bishop(self, 7, 2,"W"), Queen(self, 7, 3,"W"), King(self, 7, 4,"W"), Bishop(self, 7, 5,"W"), Knight(self, 7, 6, "W"), Rook(self, 7, 7, "W")]]
 
+    def print(self):
+        print('  a b c d e f g h')
+        for i in range(8):
+            print("", i+1, end="")
+            for j in range(8):
+                if self.matrix[i][j] != None:
+                    print(self.matrix[i][j].symbol, end=' ')
+                else:
+                    print(". ", end="")
+            print()
+
 class Game(object):
 
     def __init__(self):
@@ -94,3 +105,4 @@ class Game(object):
         self.turn = 1
 
 game1 = Game()
+game1.table.print()
