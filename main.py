@@ -21,7 +21,7 @@ class Queen(Chess_figure):
 
     def move_able(self, x, y):
         x_stop, y_stop = x, y
-        x_start, y_start = self.x, self.y
+        x_start, y_start = self.y, self.x
         if abs(x_start - x_stop) == abs(y_start - y_stop):
             state = 'diagonal'
 
@@ -121,13 +121,13 @@ class Knight(Chess_figure):
         elif self.color == "B":
             self.symbol = "♞"
 
-
     def move_able(self, y, x):
         if 0 <= x <= 7 and 0 <= y <= 7:
             if (abs(self.y - y) == 2 and abs(self.x - x) == 1) or (abs(self.y - y) == 1 and abs(self.x - x) == 2):
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return True
         return False
+
 
 class Pawn(Chess_figure):
 
@@ -191,10 +191,11 @@ class Game(object):
         Is_Won = False
         while not Is_Won:
             x1, y1 = self.coord_input(place='фигуры')
-            a = self.table.matrix[x1][y1].move_able()
-            print(a)
             x2, y2 = self.coord_input(place='куда ходить')
-            print(self.table.matrix[x2][y2])
+            print(self.table.matrix[x1][y1].symbol)
+            a = self.table.matrix[x1][y1].move_able(x2, y2)
+            print(a)
+
 
 game1 = Game()
 game1.table.print()
