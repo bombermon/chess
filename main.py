@@ -22,6 +22,7 @@ class Queen(Chess_figure):
     def move_able(self, x, y):
         x_stop, y_stop = x, y
         x_start, y_start = self.y, self.x
+        able = True
         if abs(x_start - x_stop) == abs(y_start - y_stop):
             state = 'diagonal'
 
@@ -32,8 +33,9 @@ class Queen(Chess_figure):
                 for i in range(temp_start_x + 1, temp_stop_x):
                     temp_start_y += 1
                     if self.table.matrix[i][temp_start_y] is not None:
-                        return -1
-
+                        able = False
+                        return able
+                return able
             elif temp_start_y > temp_stop_y and temp_start_x > temp_stop_x:
                 buf1 = temp_start_x
                 buf2 = temp_start_y
@@ -42,13 +44,16 @@ class Queen(Chess_figure):
                 for i in range(temp_start_x + 1, temp_stop_x):
                     temp_start_y += 1
                     if self.table.matrix[i][temp_start_y] is not None:
-                        return -1
-
+                        able = False
+                        return able
+                return able
             elif temp_start_y < temp_stop_y and temp_start_x > temp_stop_x:
                 for i in range(temp_stop_y - 1, temp_start_y, -1):
                     temp_stop_x += 1
                     if self.table.matrix[temp_stop_x][i] is not None:
-                        return -1
+                        able = False
+                        return able
+                return able
             elif temp_stop_x > temp_start_x and temp_start_y > temp_stop_y:
                 buf1 = temp_start_x
                 buf2 = temp_start_y
@@ -57,23 +62,28 @@ class Queen(Chess_figure):
                 for i in range(temp_stop_y - 1, temp_start_y, -1):
                     temp_stop_x += 1
                     if self.table.matrix[temp_stop_x][i] is not None:
-                        return -1
-
+                        able = False
+                        return able
+                return able
         elif x_start == x_stop and y_start != y_stop:
             if y_start > y_stop:
                 y_start, y_stop = y_stop, y_start
             for i in range(y_start + 1, y_stop):
                 if self.table.matrix[x_start][i] is not None:
-                    return -1
+                    able = False
+                    return able
 
             state = 'horizontal'
+            return able
         elif x_start != x_stop and y_start == y_stop:
             if x_start > x_stop:
                 x_start, x_stop = x_stop, x_start
             for i in range(x_start + 1, x_stop):
                 if self.table.matrix[i][y_start] is not None:
-                    return -1
+                    able = False
+                    return able
             state = 'vertical'
+            return able
         else:
             print('Сюда нельзя')
 
@@ -99,6 +109,33 @@ class Rook(Chess_figure):
         elif self.color == "B":
             self.symbol = "♜"
 
+    def move_able(self, x, y):
+        x_stop, y_stop = x, y
+        x_start, y_start = self.y, self.x
+        able = True
+
+        if x_start == x_stop and y_start != y_stop:
+            if y_start > y_stop:
+                y_start, y_stop = y_stop, y_start
+            for i in range(y_start + 1, y_stop):
+                if self.table.matrix[x_start][i] is not None:
+                    able = False
+                    return able
+
+            state = 'horizontal'
+            return able
+        elif x_start != x_stop and y_start == y_stop:
+            if x_start > x_stop:
+                x_start, x_stop = x_stop, x_start
+            for i in range(x_start + 1, x_stop):
+                if self.table.matrix[i][y_start] is not None:
+                    able = False
+                    return able
+            state = 'vertical'
+            return able
+        else:
+            print('Сюда нельзя')
+
 
 class Bishop(Chess_figure):
 
@@ -109,6 +146,53 @@ class Bishop(Chess_figure):
             self.symbol = "♗"
         elif self.color == "B":
             self.symbol = "♝"
+
+    def move_able(self, x, y):
+        x_stop, y_stop = x, y
+        x_start, y_start = self.y, self.x
+        able = True
+        if abs(x_start - x_stop) == abs(y_start - y_stop):
+            state = 'diagonal'
+
+            temp_start_x, temp_stop_x = x_start, x_stop
+            temp_start_y, temp_stop_y = y_start, y_stop
+
+            if (temp_start_x < temp_stop_x) and (temp_start_y < temp_stop_y):
+                for i in range(temp_start_x + 1, temp_stop_x):
+                    temp_start_y += 1
+                    if self.table.matrix[i][temp_start_y] is not None:
+                        able = False
+                        return able
+                return able
+            elif temp_start_y > temp_stop_y and temp_start_x > temp_stop_x:
+                buf1 = temp_start_x
+                buf2 = temp_start_y
+                temp_start_y, temp_start_x = temp_stop_y, temp_stop_x
+                temp_stop_y, temp_stop_x = buf2, buf1
+                for i in range(temp_start_x + 1, temp_stop_x):
+                    temp_start_y += 1
+                    if self.table.matrix[i][temp_start_y] is not None:
+                        able = False
+                        return able
+                return able
+            elif temp_start_y < temp_stop_y and temp_start_x > temp_stop_x:
+                for i in range(temp_stop_y - 1, temp_start_y, -1):
+                    temp_stop_x += 1
+                    if self.table.matrix[temp_stop_x][i] is not None:
+                        able = False
+                        return able
+                return able
+            elif temp_stop_x > temp_start_x and temp_start_y > temp_stop_y:
+                buf1 = temp_start_x
+                buf2 = temp_start_y
+                temp_start_x, temp_start_y = temp_stop_x, temp_stop_y
+                temp_stop_x, temp_stop_y = buf1, buf2
+                for i in range(temp_stop_y - 1, temp_start_y, -1):
+                    temp_stop_x += 1
+                    if self.table.matrix[temp_stop_x][i] is not None:
+                        able = False
+                        return able
+                return able
 
 
 class Knight(Chess_figure):
