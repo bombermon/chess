@@ -8,46 +8,7 @@ class Chess_figure(object):
         self.color = color
         self.symbol = ''
 
-    def move_able_dia(self, x, y):
-        x_stop, y_stop = x, y
-        x_start, y_start = self.x, self.y
-        if (abs(x_start - x_stop) == abs(y_start - y_stop)):
-            self.table.matrix[x_stop][y_stop] = 'E'
-            self.table.matrix[x_start][y_start] = 'S'
-            state = 'diagonal'
 
-            temp_start_x, temp_stop_x = x_start, x_stop
-            temp_start_y, temp_stop_y = y_start, y_stop
-
-            if (temp_start_x < temp_stop_x) and (temp_start_y < temp_stop_y):
-                for i in range(temp_start_x + 1, temp_stop_x):
-                    temp_start_y += 1
-                    self.table.matrix[i][temp_start_y] = 'Z'
-
-            elif temp_start_y > temp_stop_y and temp_start_x > temp_stop_x:
-                buf1 = temp_start_x
-                buf2 = temp_start_y
-                temp_start_y, temp_start_x = temp_stop_y, temp_stop_x
-                temp_stop_y, temp_stop_x = buf2, buf1
-                for i in range(temp_start_x + 1, temp_stop_x):
-                    temp_start_y += 1
-                    self.table.matrix[i][temp_start_y] = 'Z'
-
-            elif temp_start_y < temp_stop_y and temp_start_x > temp_stop_x:
-                for i in range(temp_stop_y - 1, temp_start_y, -1):
-                    temp_stop_x += 1
-                    self.table.matrix[temp_stop_x][i] = 'Z'
-                    printmatrix(self.table.matrix)
-            elif temp_stop_x > temp_start_x and temp_start_y > temp_stop_y:
-                buf1 = temp_start_x
-                buf2 = temp_start_y
-                temp_start_x, temp_start_y = temp_stop_x, temp_stop_y
-                temp_stop_x, temp_stop_y = buf1, buf2
-                for i in range(temp_stop_y - 1, temp_start_y, -1):
-                    temp_stop_x += 1
-                    self.table.matrix[temp_stop_x][i] = 'Z'
-                    printmatrix(self.table.matrix)
-        
 class Queen(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
@@ -57,6 +18,64 @@ class Queen(Chess_figure):
             self.symbol = "♕"
         elif self.color == "B":
             self.symbol = "♛"
+
+    def move_able(self, x, y):
+        x_stop, y_stop = x, y
+        x_start, y_start = self.x, self.y
+        if abs(x_start - x_stop) == abs(y_start - y_stop):
+            state = 'diagonal'
+
+            temp_start_x, temp_stop_x = x_start, x_stop
+            temp_start_y, temp_stop_y = y_start, y_stop
+
+            if (temp_start_x < temp_stop_x) and (temp_start_y < temp_stop_y):
+                for i in range(temp_start_x + 1, temp_stop_x):
+                    temp_start_y += 1
+                    if self.table.matrix[i][temp_start_y] is not None:
+                        return -1
+
+            elif temp_start_y > temp_stop_y and temp_start_x > temp_stop_x:
+                buf1 = temp_start_x
+                buf2 = temp_start_y
+                temp_start_y, temp_start_x = temp_stop_y, temp_stop_x
+                temp_stop_y, temp_stop_x = buf2, buf1
+                for i in range(temp_start_x + 1, temp_stop_x):
+                    temp_start_y += 1
+                    if self.table.matrix[i][temp_start_y] is not None:
+                        return -1
+
+            elif temp_start_y < temp_stop_y and temp_start_x > temp_stop_x:
+                for i in range(temp_stop_y - 1, temp_start_y, -1):
+                    temp_stop_x += 1
+                    if self.table.matrix[temp_stop_x][i] is not None:
+                        return -1
+            elif temp_stop_x > temp_start_x and temp_start_y > temp_stop_y:
+                buf1 = temp_start_x
+                buf2 = temp_start_y
+                temp_start_x, temp_start_y = temp_stop_x, temp_stop_y
+                temp_stop_x, temp_stop_y = buf1, buf2
+                for i in range(temp_stop_y - 1, temp_start_y, -1):
+                    temp_stop_x += 1
+                    if self.table.matrix[temp_stop_x][i] is not None:
+                        return -1
+
+        elif x_start == x_stop and y_start != y_stop:
+            if y_start > y_stop:
+                y_start, y_stop = y_stop, y_start
+            for i in range(y_start + 1, y_stop):
+                if self.table.matrix[x_start][i] is not None:
+                    return -1
+
+            state = 'horizontal'
+        elif x_start != x_stop and y_start == y_stop:
+            if x_start > x_stop:
+                x_start, x_stop = x_stop, x_start
+            for i in range(x_start + 1, x_stop):
+                if self.table.matrix[i][y_start] is not None:
+                    return -1
+            state = 'vertical'
+        else:
+            print('Сюда нельзя')
 
 
 class King(Chess_figure):
@@ -151,6 +170,24 @@ class Game(object):
         self.table = Table()
         self.turn = 1
 
+    def coord_input(self, place):
+        let_2_dig = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
+        coord = input(f'Введите координату {place}: ').split()
+        x, y = coord[0], int(coord[1])
+        x = let_2_dig[x]
+        buf = x
+        x = y - 1
+        y = buf
+        return x, y
+
+    def play(self):
+        Is_Won = False
+        while not Is_Won:
+            x1, y1 = self.coord_input(place='фигуры')
+            print(self.table.matrix[x1][y1].symbol)
+            x2, y2 = self.coord_input(place='куда ходить')
+            print(self.table.matrix[x2][y2])
 
 game1 = Game()
 game1.table.print()
+game1.play()

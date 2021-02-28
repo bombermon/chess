@@ -1,6 +1,7 @@
-a = [["*", "*", "*", "*","*","*" ],
-    ["*", "*", "*", "*","*","*" ],["*", "*", "*", "*","*","*" ], ["*", "*", "*", "*","*","*" ],
-    ["*", "*", "*", "*","*","*" ], ["*", "*", "*", "*","*","*" ]]
+a = [["*", "*", "*", "*", "*", "*"],
+     ["*", "*", "*", "*", "*", "*"], ["*", "*", "*", "*", "*", "*"], ["*", "*", "*", "*", "*", "*"],
+     ["*", "*", "*", "*", "*", "*"], ["*", "*", "*", "*", "*", "*"]]
+
 
 def printmatrix(a):
     print('  0 1 2 3 4 5')
@@ -11,9 +12,10 @@ def printmatrix(a):
             print(a[i][j], end=' ')
         print()
 
+
 a[2][2] = 'П'
 printmatrix(a)
-x_start , y_start = (int(i) for i in input().split())
+x_start, y_start = (int(i) for i in input().split())
 
 x_stop = 1
 y_stop = 1
@@ -66,10 +68,19 @@ if (abs(x_start - x_stop) == abs(y_start - y_stop)):
 elif x_start == x_stop and y_start != y_stop:
     a[x_stop][y_stop] = 'E'
     a[x_start][y_start] = 'S'
+    if y_start > y_stop:
+        y_start, y_stop = y_stop, y_start
+    for i in range(y_start + 1, y_stop):
+        a[x_start][i] = 'Z'
+
     state = 'horizontal'
 elif x_start != x_stop and y_start == y_stop:
     a[x_stop][y_stop] = 'E'
     a[x_start][y_start] = 'S'
+    if x_start > x_stop:
+        x_start, x_stop = x_stop, x_start
+    for i in range(x_start + 1, x_stop):
+        a[i][y_start] = 'Z'
     state = 'vertical'
 else:
     print('Сюда нельзя')
