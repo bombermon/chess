@@ -8,6 +8,10 @@ class Chess_figure(object):
         self.color = color
         self.symbol = ''
 
+    def move(self, pos_y, pos_x):
+        self.table[self.y][self.x] = None
+        self.table[pos_y][pos_x] = self
+
 
 class Queen(Chess_figure):
 
@@ -274,11 +278,27 @@ class Game(object):
     def play(self):
         Is_Won = False
         while not Is_Won:
-            x1, y1 = self.coord_input(place='фигуры')
-            x2, y2 = self.coord_input(place='куда ходить')
-            print(self.table.matrix[x1][y1].symbol)
-            a = self.table.matrix[x1][y1].move_able(x2, y2)
-            print(a)
+            turn_done = False
+            print("Ходят ", end="")
+
+            if self.turn % 2 == 0:
+                print("белые")
+            else:
+                print("черные")
+
+            while not turn_done:
+                x1, y1 = self.coord_input(place='фигуры')
+                x2, y2 = self.coord_input(place='куда ходить')
+                if (self.table.matrix[x1][y1].color == "W" and self.turn % 2 == 1) or (self.table.matrix[x1][y1].color == "B" and self.turn == 0):
+                    print(self.table.matrix[x1][y1].symbol)
+                    a = self.table.matrix[x1][y1].move_able(x2, y2)
+                if a:
+                    self.table.matrix[x1][y1].move(x2, y2)
+                    turn_done = True
+                else:
+                    print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
+            self.turn += 1
+
 
 
 game1 = Game()
