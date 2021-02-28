@@ -122,6 +122,13 @@ class Knight(Chess_figure):
             self.symbol = "♞"
 
 
+    def move_able(self, y, x):
+        if 0 <= x <= 7 and 0 <= y <= 7:
+            if (abs(self.y - y) == 2 and abs(self.x - x) == 1) or (abs(self.y - y) == 1 and abs(self.x - x) == 2):
+                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+                    return True
+        return False
+
 class Pawn(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
