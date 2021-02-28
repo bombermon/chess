@@ -227,6 +227,34 @@ class Pawn(Chess_figure):
         elif self.color == "B":
             self.symbol = "♟"
 
+    def move_able(self, x, y):
+        x_stop, y_stop = x, y
+        x_start, y_start = self.y, self.x
+        able = True
+
+        if self.color == "W":
+            if x == 6 and (x_start - x_stop) in [-1,-2] and y_start == y_stop:
+                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+                    return able
+            elif (x_start - x_stop) == -1 and y_start == y_stop:
+                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+                    return able
+            else:
+                print('Сюда нельзя')
+        elif self.color == "B":
+            if x == 1 and (x_start - x_stop) in [1,2] and y_start == y_stop:
+                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+                    return able
+            elif (x_start - x_stop) == 1 and y_start == y_stop:
+                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+                    return able
+            else:
+                print('Сюда нельзя')
+
+
+
+
+
 
 class Table(object):
 
