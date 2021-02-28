@@ -184,7 +184,8 @@ class Game(object):
         Is_Won = False
         while not Is_Won:
             x1, y1 = self.coord_input(place='фигуры')
-            print(self.table.matrix[x1][y1].symbol)
+            a = self.table.matrix[x1][y1].move_able()
+            print(a)
             x2, y2 = self.coord_input(place='куда ходить')
             print(self.table.matrix[x2][y2])
 
