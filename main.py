@@ -2,13 +2,13 @@ class Chess_figure(object):
 
     def __init__(self, Table, pos_y, pos_x, color):
         self.table = Table
-        self.y = pos_x
-        self.x = pos_y
+        self.y = pos_y
+        self.x = pos_x
         self.type = ''
         self.color = color
         self.symbol = ''
 
-pass
+
 class Queen(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
