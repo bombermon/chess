@@ -8,7 +8,7 @@ class Chess_figure(object):
         self.color = color
         self.symbol = ''
 
-
+pass
 class Queen(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
