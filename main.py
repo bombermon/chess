@@ -10,6 +10,8 @@ class Chess_figure(object):
 
     def move(self, pos_y, pos_x):
         self.table.matrix[self.y][self.x] = None
+        self.x = pos_x
+        self.y = pos_y
         self.table.matrix[pos_y][pos_x] = self
 
 
@@ -236,7 +238,7 @@ class Pawn(Chess_figure):
             if y_start == 6 and (y_start - y_stop) in [1, 2] and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
-            elif (y_start - y_stop) == -1 and x_start == x_stop:
+            elif (y_start - y_stop) == 1 and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
             else:
@@ -245,7 +247,7 @@ class Pawn(Chess_figure):
             if y_start == 1 and (y_start - y_stop) in [-1, -2] and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
-            elif (y_start - y_stop) == 1 and x_start == x_stop:
+            elif (y_start - y_stop) == -1 and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
             else:
@@ -267,8 +269,8 @@ class Table(object):
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
-            [Pawn(self, 6, 0, "W"), None, None, None, None, None, None, None, None],
-            [None, Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
+            [None, None, None, None, None, None, None, None, None],
+            [Pawn(self, 6, 0, "W"), Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
              Pawn(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
             [Rook(self, 7, 0, "W"), Knight(self, 7, 1, "W"), Bishop(self, 7, 2, "W"), Queen(self, 7, 3, "W"),
              King(self, 7, 4, "W"), Bishop(self, 7, 5, "W"), Knight(self, 7, 6, "W"), Rook(self, 7, 7, "W")]]
