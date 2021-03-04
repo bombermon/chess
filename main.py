@@ -31,7 +31,6 @@ class Queen(Chess_figure):
         able = True
         if abs(x_start - x_stop) == abs(y_start - y_stop):
 
-
             temp_start_x, temp_stop_x = x_start, x_stop
             temp_start_y, temp_stop_y = y_start, y_stop
 
@@ -73,7 +72,7 @@ class Queen(Chess_figure):
             if y_start > y_stop:
                 y_start, y_stop = y_stop, y_start
             for i in range(y_start + 1, y_stop):
-                if self.table.matrix[x_start][i] is not None:
+                if self.table.matrix[i][x_start] is not None:
                     able = False
 
 
@@ -82,7 +81,7 @@ class Queen(Chess_figure):
             if x_start > x_stop:
                 x_start, x_stop = x_stop, x_start
             for i in range(x_start + 1, x_stop):
-                if self.table.matrix[i][y_start] is not None:
+                if self.table.matrix[y_start][i] is not None:
                     able = False
 
 
@@ -91,9 +90,11 @@ class Queen(Chess_figure):
             print('Сюда нельзя')
             able = False
             return able
-        if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
-            able = False
+        if self.table.matrix[y_stop][x_stop] is not None:
+            if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+                able = False
         return able
+
 
 class King(Chess_figure):
 
@@ -136,21 +137,26 @@ class Rook(Chess_figure):
             for i in range(y_start + 1, y_stop):
                 if self.table.matrix[i][x_start] is not None:
                     able = False
-                    return able
 
 
-            return able
+
         elif x_start != x_stop and y_start == y_stop:
             if x_start > x_stop:
                 x_start, x_stop = x_stop, x_start
             for i in range(x_start + 1, x_stop):
                 if self.table.matrix[y_start][i] is not None:
                     able = False
-                    return able
 
-            return able
+
+
         else:
             print('Сюда нельзя')
+            able = False
+            return able
+        if self.table.matrix[y_stop][x_stop] is not None:
+            if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+                able = False
+        return able
 
 
 class Bishop(Chess_figure):
@@ -169,7 +175,6 @@ class Bishop(Chess_figure):
         able = True
         if abs(x_start - x_stop) == abs(y_start - y_stop):
 
-
             temp_start_x, temp_stop_x = x_start, x_stop
             temp_start_y, temp_stop_y = y_start, y_stop
 
@@ -178,8 +183,8 @@ class Bishop(Chess_figure):
                     temp_start_y += 1
                     if self.table.matrix[temp_start_y][i] is not None:
                         able = False
-                        return able
-                return able
+
+
             elif temp_start_y > temp_stop_y and temp_start_x > temp_stop_x:
                 buf1 = temp_start_x
                 buf2 = temp_start_y
@@ -189,15 +194,14 @@ class Bishop(Chess_figure):
                     temp_start_y += 1
                     if self.table.matrix[temp_start_y][i] is not None:
                         able = False
-                        return able
-                return able
+
+
             elif temp_start_y < temp_stop_y and temp_start_x > temp_stop_x:
                 for i in range(temp_stop_y - 1, temp_start_y, -1):
                     temp_stop_x += 1
                     if self.table.matrix[i][temp_stop_x] is not None:
                         able = False
-                        return able
-                return able
+
             elif temp_stop_x > temp_start_x and temp_start_y > temp_stop_y:
                 buf1 = temp_start_x
                 buf2 = temp_start_y
@@ -207,8 +211,19 @@ class Bishop(Chess_figure):
                     temp_stop_x += 1
                     if self.table.matrix[i][temp_stop_x] is not None:
                         able = False
-                        return able
-                return able
+
+
+
+
+
+        else:
+            print('Сюда нельзя')
+            able = False
+            return able
+        if self.table.matrix[y_stop][x_stop] is not None:
+            if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+                able = False
+        return able
 
 
 class Knight(Chess_figure):
@@ -276,8 +291,9 @@ class Table(object):
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
-            [Pawn(self, 6, 0, "W"), Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
-             Pawn(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
+            [None, None, None, None, None, None, None, None, None],
+            # [Pawn(self, 6, 0, "W"), Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
+            # Pawn(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
             [Rook(self, 7, 0, "W"), Knight(self, 7, 1, "W"), Bishop(self, 7, 2, "W"), Queen(self, 7, 3, "W"),
              King(self, 7, 4, "W"), Bishop(self, 7, 5, "W"), Knight(self, 7, 6, "W"), Rook(self, 7, 7, "W")]]
 
