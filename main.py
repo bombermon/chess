@@ -28,7 +28,7 @@ class Queen(Chess_figure):
         y_start, x_start = self.y, self.x
         able = True
         if abs(x_start - x_stop) == abs(y_start - y_stop):
-            state = 'diagonal'
+
 
             temp_start_x, temp_stop_x = x_start, x_stop
             temp_start_y, temp_stop_y = y_start, y_stop
@@ -38,8 +38,8 @@ class Queen(Chess_figure):
                     temp_start_y += 1
                     if self.table.matrix[temp_start_y][i] is not None:
                         able = False
-                        return able
-                return able
+
+
             elif temp_start_y > temp_stop_y and temp_start_x > temp_stop_x:
                 buf1 = temp_start_x
                 buf2 = temp_start_y
@@ -49,15 +49,14 @@ class Queen(Chess_figure):
                     temp_start_y += 1
                     if self.table.matrix[temp_start_y][i] is not None:
                         able = False
-                        return able
-                return able
+
+
             elif temp_start_y < temp_stop_y and temp_start_x > temp_stop_x:
                 for i in range(temp_stop_y - 1, temp_start_y, -1):
                     temp_stop_x += 1
                     if self.table.matrix[i][temp_stop_x] is not None:
                         able = False
-                        return able
-                return able
+
             elif temp_stop_x > temp_start_x and temp_start_y > temp_stop_y:
                 buf1 = temp_start_x
                 buf2 = temp_start_y
@@ -67,30 +66,32 @@ class Queen(Chess_figure):
                     temp_stop_x += 1
                     if self.table.matrix[i][temp_stop_x] is not None:
                         able = False
-                        return able
-                return able
+
         elif x_start == x_stop and y_start != y_stop:
             if y_start > y_stop:
                 y_start, y_stop = y_stop, y_start
             for i in range(y_start + 1, y_stop):
                 if self.table.matrix[x_start][i] is not None:
                     able = False
-                    return able
 
-            state = 'vertical'
-            return able
+
+
         elif x_start != x_stop and y_start == y_stop:
             if x_start > x_stop:
                 x_start, x_stop = x_stop, x_start
             for i in range(x_start + 1, x_stop):
                 if self.table.matrix[i][y_start] is not None:
                     able = False
-                    return able
-            state = 'horizontal'
-            return able
+
+
+
         else:
             print('Сюда нельзя')
-
+            able = False
+            return able
+        if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+            able = False
+        return able
 
 class King(Chess_figure):
 
@@ -126,7 +127,7 @@ class Rook(Chess_figure):
                     able = False
                     return able
 
-            state = 'vertical'
+
             return able
         elif x_start != x_stop and y_start == y_stop:
             if x_start > x_stop:
@@ -135,7 +136,7 @@ class Rook(Chess_figure):
                 if self.table.matrix[y_start][i] is not None:
                     able = False
                     return able
-            state = 'horizontal'
+
             return able
         else:
             print('Сюда нельзя')
@@ -156,7 +157,7 @@ class Bishop(Chess_figure):
         y_start, x_start = self.y, self.x
         able = True
         if abs(x_start - x_stop) == abs(y_start - y_stop):
-            state = 'diagonal'
+
 
             temp_start_x, temp_stop_x = x_start, x_stop
             temp_start_y, temp_stop_y = y_start, y_stop
@@ -252,10 +253,6 @@ class Pawn(Chess_figure):
                 print('Сюда нельзя')
 
 
-
-
-
-
 class Table(object):
 
     def __init__(self):
@@ -315,7 +312,8 @@ class Game(object):
                 y1, x1 = self.coord_input(place='фигуры')
                 y2, x2 = self.coord_input(place='куда ходить')
                 a = False
-                if (self.table.matrix[y1][x1].color == "W" and self.turn % 2 == 1) or (self.table.matrix[y1][x1].color == "B" and self.turn % 2 == 0):
+                if (self.table.matrix[y1][x1].color == "W" and self.turn % 2 == 1) or (
+                        self.table.matrix[y1][x1].color == "B" and self.turn % 2 == 0):
                     print(self.table.matrix[y1][x1].symbol)
                     a = self.table.matrix[y1][x1].move_able(y2, x2)
                 if a:
@@ -324,7 +322,6 @@ class Game(object):
                 else:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
             self.turn += 1
-
 
 
 game1 = Game()
