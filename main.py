@@ -10,6 +10,8 @@ class Chess_figure(object):
 
     def move(self, pos_y, pos_x):
         self.table.matrix[self.y][self.x] = None
+        self.x = pos_x
+        self.y = pos_y
         self.table.matrix[pos_y][pos_x] = self
 
 
@@ -102,6 +104,15 @@ class King(Chess_figure):
             self.symbol = "♔"
         elif self.color == "B":
             self.symbol = "♚"
+
+    def move_able(self, y, x):
+        x_stop, y_stop = x, y
+        y_start, x_start = self.y, self.x
+
+        if (x_start != x_stop or y_start != y_stop) and (abs(y_start - y_stop) < 2 and abs(x_start - x_stop)) < 2 and (
+                self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].color != self.color):
+            return True
+        return False
 
 
 class Rook(Chess_figure):
@@ -237,7 +248,7 @@ class Pawn(Chess_figure):
             if y_start == 6 and (y_start - y_stop) in [1, 2] and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
-            elif (y_start - y_stop) == -1 and x_start == x_stop:
+            elif (y_start - y_stop) == 1 and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
             else:
@@ -246,7 +257,7 @@ class Pawn(Chess_figure):
             if y_start == 1 and (y_start - y_stop) in [-1, -2] and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
-            elif (y_start - y_stop) == 1 and x_start == x_stop:
+            elif (y_start - y_stop) == -1 and x_start == x_stop:
                 if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
                     return able
             else:
@@ -264,8 +275,8 @@ class Table(object):
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
-            [Pawn(self, 6, 0, "W"), None, None, None, None, None, None, None, None],
-            [None, Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
+            [None, None, None, None, None, None, None, None, None],
+            [Pawn(self, 6, 0, "W"), Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
              Pawn(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
             [Rook(self, 7, 0, "W"), Knight(self, 7, 1, "W"), Bishop(self, 7, 2, "W"), Queen(self, 7, 3, "W"),
              King(self, 7, 4, "W"), Bishop(self, 7, 5, "W"), Knight(self, 7, 6, "W"), Rook(self, 7, 7, "W")]]
@@ -293,8 +304,13 @@ class Game(object):
     def coord_input(self, place):
         let_2_dig = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
         coord = input(f'Введите координату {place}: ').split()
-        y, x = int(coord[1]) - 1, let_2_dig[coord[0]]
-        return y, x
+        if len(coord) == 2:
+            if let_2_dig.get(coord[0]) is not None:
+                if coord[1].isdigit():
+                    if 1 <= int(coord[1]) <= 8:
+                        y, x = int(coord[1]) - 1, let_2_dig[coord[0]]
+                        return y, x
+        return False, False
 
     def play(self):
         Is_Won = False
@@ -310,7 +326,13 @@ class Game(object):
 
             while not turn_done:
                 y1, x1 = self.coord_input(place='фигуры')
+                if y1 is False:
+                    print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
+                    continue
                 y2, x2 = self.coord_input(place='куда ходить')
+                if y2 is False:
+                    print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
+                    continue
                 a = False
                 if (self.table.matrix[y1][x1].color == "W" and self.turn % 2 == 1) or (
                         self.table.matrix[y1][x1].color == "B" and self.turn % 2 == 0):
