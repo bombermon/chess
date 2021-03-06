@@ -1,3 +1,10 @@
+"""
+    Делаем задания номер:
+        1) Фигуры
+        2) Шашки
+        5) Откаты
+        7) Подсказка хода
+"""
 class Chess_figure(object):
 
     def __init__(self, Table, pos_y, pos_x, color):
