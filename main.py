@@ -19,7 +19,6 @@ class Queen(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "Queen"
         if self.color == "W":
             self.symbol = "♕"
         elif self.color == "B":
@@ -100,7 +99,6 @@ class King(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♔"
         elif self.color == "B":
@@ -120,7 +118,6 @@ class Rook(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♖"
         elif self.color == "B":
@@ -163,7 +160,6 @@ class Bishop(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♗"
         elif self.color == "B":
@@ -179,7 +175,7 @@ class Bishop(Chess_figure):
             temp_start_y, temp_stop_y = y_start, y_stop
 
             if (temp_start_x < temp_stop_x) and (temp_start_y < temp_stop_y):
-                for i in range(temp_start_x + 1, temp_stop_x ):
+                for i in range(temp_start_x + 1, temp_stop_x):
                     temp_start_y += 1
                     if self.table.matrix[temp_start_y][i] is not None:
                         able = False
@@ -230,7 +226,6 @@ class Knight(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♘"
         elif self.color == "B":
@@ -248,7 +243,6 @@ class Pawn(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♙"
         elif self.color == "B":
