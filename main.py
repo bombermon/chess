@@ -19,7 +19,6 @@ class Queen(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♕"
         elif self.color == "B":
@@ -100,7 +99,6 @@ class King(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♔"
         elif self.color == "B":
@@ -120,7 +118,6 @@ class Rook(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♖"
         elif self.color == "B":
@@ -163,7 +160,6 @@ class Bishop(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♗"
         elif self.color == "B":
@@ -230,7 +226,6 @@ class Knight(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♘"
         elif self.color == "B":
@@ -248,7 +243,6 @@ class Pawn(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♙"
         elif self.color == "B":
