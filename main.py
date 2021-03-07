@@ -250,34 +250,58 @@ class Pawn(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
+        self.type = "King"
         if self.color == "W":
             self.symbol = "♙"
         elif self.color == "B":
             self.symbol = "♟"
 
-    def move_able(self, y, x):
+    def move_able(self, x, y):
         x_stop, y_stop = x, y
-        y_start, x_start = self.y, self.x
+        x_start, y_start = self.y, self.x
         able = True
 
         if self.color == "W":
-            if y_start == 6 and (y_start - y_stop) in [1, 2] and x_start == x_stop:
-                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+            if x_start == 6 and (x_start - x_stop) in [1,2] and y_start == y_stop:
+                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
-            elif (y_start - y_stop) == 1 and x_start == x_stop:
-                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+            elif (x_start - x_stop) == -1 and y_start == y_stop:
+                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
             else:
                 print('Сюда нельзя')
+                # Вверх вправо
+            for i in range(x_start - 1, -1, -1):
+                if (0 <= y_start + (x_start - i) <= 1) and self.table.matrix[i][y_start + (x_start - i)] is not None:
+                    able = False
+                    return able
+
+                # Вверх влево
+            for i in range(x_start - 1, -1, -1):
+                if (0 <= y_start - (x_start - i) <= 1) and self.table.matrix[i][y_start - (x_start - i)] is not None:
+                    able = False
+                    return able
+
         elif self.color == "B":
-            if y_start == 1 and (y_start - y_stop) in [-1, -2] and x_start == x_stop:
-                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+            if x_start == 1 and (x_start - x_stop) in [-1,-2] and y_start == y_stop:
+                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
-            elif (y_start - y_stop) == -1 and x_start == x_stop:
-                if self.table.matrix[y][x] is None or self.table.matrix[y][x].symbol != self.symbol:
+            elif (x_start - x_stop) == -1 and y_start == y_stop:
+                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
             else:
                 print('Сюда нельзя')
+
+                # Вниз вправо
+            for i in range(x_start + 1, 8):
+                if  (0 <= y_start + (i - x_start) <= 1) and self.table.matrix[i][y_start + (i - x_start)] is not None:
+                    able = False
+                    return able
+                # Вниз влево
+            for i in range(x_start + 1, 8):
+                if  (0 <= y_start - (i - x_start) <= 1) and self.table.matrix[i][y_start - (i - x_start)] is not None:
+                    able = False
+                    return able
 
 
 class Table(object):
