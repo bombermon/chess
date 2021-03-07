@@ -9,24 +9,48 @@ class Checkers_figure(object):
         self.table = Table
         self.y = pos_y
         self.x = pos_x
-        self.type = ''
         self.color = color
         self.symbol = ''
 
-    def move(self, pos_y, pos_x):
+    def move(self, pos_y, pos_x, pos_y_cut, pos_x_cut):
         self.table.matrix[self.y][self.x] = None
         self.x = pos_x
         self.y = pos_y
         self.table.matrix[pos_y][pos_x] = self
+        if pos_y is not True:
+            self.table.matrix[pos_y_cut][pos_x_cut] = None
 
 
 class Checker(Checkers_figure):
+
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
         if self.color == "W":
             self.symbol = "⚪"
         elif self.color == "B":
             self.symbol = "⚫"
+
+    def move_able(self, y_end, x_end, is_first_move=True):
+        if self.color == "W":
+            if is_first_move:
+                if self.y >= 1 and self.x >= 1 and self.y - 1 == y_end and self.x - 1 == x_end and self.table.matrix[y_end][x_end] is None:
+                    return True, True
+                elif self.y >= 1 and self.x <= 6 and self.y - 1 == y_end and self.x + 1 == x_end and self.table.matrix[y_end][x_end] is None:
+                    return True, True
+        else:
+            if is_first_move:
+                if self.y <= 6 and self.x >= 1 and self.y + 1 == y_end and self.x - 1 == x_end and self.table.matrix[y_end][x_end] is None:
+                    return True, True
+                elif self.y <= 6 and self.x <= 6 and self.y + 1 == y_end and self.x + 1 == x_end and self.table.matrix[y_end][x_end] is None:
+                    return True, True
+        if self.y >= 2 and self.x >= 2 and self.y - 2 == y_end and self.x - 2 == x_end and self.table.matrix[y_end][x_end] is None and self.table.matrix[self.y - 1][self.x - 1] is not None and self.table.matrix[self.y - 1][self.x - 1].color != self.color:
+            return self.y - 1, self.x - 1
+        elif self.y >= 2 and self.x <= 5 and self.y - 2 == y_end and self.x + 2 == x_end and self.table.matrix[y_end][x_end] is None and self.table.matrix[self.y - 1][self.x + 1] is not None and self.table.matrix[self.y - 1][self.x + 1].color != self.color:
+            return self.y - 1, self.x + 1
+        elif self.y <= 6 and self.x >= 2 and self.y + 2 == y_end and self.x - 2 == x_end and self.table.matrix[y_end][x_end] is None and self.table.matrix[self.y + 1][self.x - 1] is not None and self.table.matrix[self.y + 1][self.x - 1].color != self.color:
+            return self.y + 1, self.x - 1
+        elif self.y <= 6 and self.x <= 5 and self.y + 2 == y_end and self.x + 2 == x_end and self.table.matrix[y_end][x_end] is None and self.table.matrix[self.y + 1][self.x + 1] is not None and self.table.matrix[self.y + 1][self.x + 1].color != self.color:
+            return self.y + 1, self.x + 1
 
 
 class Table(object):
@@ -71,6 +95,8 @@ class Game(object):
     def coord_input(self, place):
         let_2_dig = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
         coord = input(f'Введите координату {place}: ').split()
+        if len(coord) == 1 and coord[0] == "end":
+            return "end", "end"
         if len(coord) == 2:
             if let_2_dig.get(coord[0]) is not None:
                 if coord[1].isdigit():
@@ -80,8 +106,8 @@ class Game(object):
         return False, False
 
     def play(self):
-        Is_Won = False
-        while not Is_Won:
+        is_won = False
+        while not is_won:
             game1.table.print()
             turn_done = False
             print("Ходят ", end="")
@@ -96,7 +122,6 @@ class Game(object):
                 if y1 is False:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
                     continue
-                self.table.matrix[y1][x1].hint()
                 y2, x2 = self.coord_input(place='куда ходить')
                 if y2 is False:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
@@ -105,10 +130,31 @@ class Game(object):
                 if (self.table.matrix[y1][x1].color == "W" and self.turn % 2 == 1) or (
                         self.table.matrix[y1][x1].color == "B" and self.turn % 2 == 0):
                     print(self.table.matrix[y1][x1].symbol)
-                    a = self.table.matrix[y1][x1].move_able(y2, x2)
+                    y_cut, x_cut = self.table.matrix[y1][x1].move_able(y2, x2)
 
-                if a:
-                    self.table.matrix[y1][x1].move(y2, x2)
+                if y_cut:
+                    self.table.matrix[y1][x1].move(y2, x2, y_cut, x_cut)
+                    if y_cut is not True:
+                        narezka = True
+                        while narezka:
+                            y1, x1 = y2, x2
+                            print('Съели, если хотите съесть еще, пишите координату, иначе пишите "end"')
+                            correct_read = 0
+                            while correct_read != 1:
+                                if correct_read == -1:
+                                    print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
+                                y2, x2 = self.coord_input(place='куда ходить')
+                                if y2:
+                                    correct_read = 1
+                                else:
+                                    correct_read = -1
+                            if y2 == "end":
+                                narezka = False
+                                continue
+                            else:
+                                y_cut, x_cut = self.table.matrix[y1][x1].move_able(y2, x2, False)
+                            if y_cut:
+                                self.table.matrix[y1][x1].move(y2, x2, y_cut, x_cut)
                     turn_done = True
                 else:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
