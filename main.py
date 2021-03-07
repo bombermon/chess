@@ -2,8 +2,8 @@
     Делаем задания номер:
         1) Фигуры
         2) Шашки
-        5) Откаты
-        7) Подсказка хода
+        5) Откаты СДЕЛАНО
+        7) Подсказка хода  СДЕЛАНО
 """
 import copy
 
@@ -23,6 +23,40 @@ class Chess_figure(object):
         self.x = pos_x
         self.y = pos_y
         self.table.matrix[pos_y][pos_x] = self
+
+    def hint(self):
+        x = self.x
+        y = self.y
+        matrix = [[None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None]]
+        for i in range(8):
+            for j in range(8):
+                if self.table.matrix[y][x].move_able(j, i):
+                    matrix[j][i] = '⭐'
+
+        for i in range(8):
+            for j in range(8):
+                if matrix[j][i] != '⭐' and self.table.matrix[j][i] is not None :
+                    matrix[j][i] = self.table.matrix[j][i].symbol
+        print('ПОДСКАЗКА ДЛЯ ВАШЕГО ХОДА')
+        print('  a  b  c d  e f g  h')
+        for i in range(8):
+            print("", i + 1, end="")
+            for j in range(8):
+                if matrix[i][j] is not None:
+                    print(matrix[i][j], end=' ')
+                elif (i + j) % 2 == 0:
+                    print("⬜ ", end="")
+                else:
+                    print("⬛ ", end="")
+            print()
+
 
 
 class Queen(Chess_figure):
@@ -96,10 +130,9 @@ class Queen(Chess_figure):
 
 
         else:
-            print('Сюда нельзя')
             able = False
             return able
-        if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None :
+        if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
             if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
                 able = False
         return able
@@ -157,10 +190,10 @@ class Rook(Chess_figure):
 
 
         else:
-            print('Сюда нельзя')
+
             able = False
             return able
-        if self.table.matrix[y_stop][x_stop] is not None:
+        if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
             if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
                 able = False
         return able
@@ -223,10 +256,10 @@ class Bishop(Chess_figure):
 
 
         else:
-            print('Сюда нельзя')
+
             able = False
             return able
-        if self.table.matrix[y_stop][x_stop] is not None:
+        if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
             if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
                 able = False
         return able
@@ -265,14 +298,14 @@ class Pawn(Chess_figure):
         able = True
 
         if self.color == "W":
-            if x_start == 6 and (x_start - x_stop) in [1,2] and y_start == y_stop:
+            if x_start == 6 and (x_start - x_stop) in [1, 2] and y_start == y_stop:
                 if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
             elif (x_start - x_stop) == -1 and y_start == y_stop:
                 if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
             else:
-                print('Сюда нельзя')
+                pass
                 # Вверх вправо
             for i in range(x_start - 1, -1, -1):
                 if (0 <= y_start + (x_start - i) <= 1) and self.table.matrix[i][y_start + (x_start - i)] is not None:
@@ -286,23 +319,23 @@ class Pawn(Chess_figure):
                     return able
 
         elif self.color == "B":
-            if x_start == 1 and (x_start - x_stop) in [-1,-2] and y_start == y_stop:
+            if x_start == 1 and (x_start - x_stop) in [-1, -2] and y_start == y_stop:
                 if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
             elif (x_start - x_stop) == -1 and y_start == y_stop:
                 if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
                     return able
             else:
-                print('Сюда нельзя')
+                pass
 
                 # Вниз вправо
             for i in range(x_start + 1, 8):
-                if  (0 <= y_start + (i - x_start) <= 1) and self.table.matrix[i][y_start + (i - x_start)] is not None:
+                if (0 <= y_start + (i - x_start) <= 1) and self.table.matrix[i][y_start + (i - x_start)] is not None:
                     able = False
                     return able
                 # Вниз влево
             for i in range(x_start + 1, 8):
-                if  (0 <= y_start - (i - x_start) <= 1) and self.table.matrix[i][y_start - (i - x_start)] is not None:
+                if (0 <= y_start - (i - x_start) <= 1) and self.table.matrix[i][y_start - (i - x_start)] is not None:
                     able = False
                     return able
 
@@ -320,7 +353,7 @@ class Table(object):
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
             [Pawn(self, 6, 0, "W"), Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
-            Pawn(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
+             Pawn(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
             [Rook(self, 7, 0, "W"), Knight(self, 7, 1, "W"), Bishop(self, 7, 2, "W"), Queen(self, 7, 3, "W"),
              King(self, 7, 4, "W"), Bishop(self, 7, 5, "W"), Knight(self, 7, 6, "W"), Rook(self, 7, 7, "W")]]
 
@@ -385,6 +418,7 @@ class Game(object):
                 if y1 is False:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
                     continue
+                self.table.matrix[y1][x1].hint()
                 y2, x2 = self.coord_input(place='куда ходить')
                 if y2 is False:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
@@ -394,6 +428,7 @@ class Game(object):
                         self.table.matrix[y1][x1].color == "B" and self.turn % 2 == 0):
                     print(self.table.matrix[y1][x1].symbol)
                     a = self.table.matrix[y1][x1].move_able(y2, x2)
+
                 if a:
                     self.history.append(copy.deepcopy(self.table))
                     self.table.matrix[y1][x1].move(y2, x2)
