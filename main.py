@@ -5,6 +5,9 @@
         5) Откаты
         7) Подсказка хода
 """
+import copy
+
+
 class Chess_figure(object):
 
     def __init__(self, Table, pos_y, pos_x, color):
@@ -340,10 +343,19 @@ class Game(object):
     def __init__(self):
         self.table = Table()
         self.turn = 1
+        self.history = []
+
+    def cancel_move(self):
+        if self.turn != 1:
+            self.table = self.history.pop()
+            self.turn -= 1
+
 
     def coord_input(self, place):
         let_2_dig = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
         coord = input(f'Введите координату {place}: ').split()
+        if len(coord) == 1 and coord[0] == "back":
+            return -1, -1
         if len(coord) == 2:
             if let_2_dig.get(coord[0]) is not None:
                 if coord[1].isdigit():
@@ -366,6 +378,10 @@ class Game(object):
 
             while not turn_done:
                 y1, x1 = self.coord_input(place='фигуры')
+                if y1 == -1:
+                    self.cancel_move()
+                    turn_done = True
+                    continue
                 if y1 is False:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
                     continue
@@ -379,11 +395,13 @@ class Game(object):
                     print(self.table.matrix[y1][x1].symbol)
                     a = self.table.matrix[y1][x1].move_able(y2, x2)
                 if a:
+                    self.history.append(copy.deepcopy(self.table))
                     self.table.matrix[y1][x1].move(y2, x2)
                     turn_done = True
+                    self.turn += 1
                 else:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
-            self.turn += 1
+
 
 
 game1 = Game()
