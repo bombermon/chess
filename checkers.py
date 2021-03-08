@@ -20,6 +20,39 @@ class Checkers_figure(object):
         if pos_y is not True:
             self.table.matrix[pos_y_cut][pos_x_cut] = None
 
+    def hint(self):
+        x = self.x
+        y = self.y
+        matrix = [[None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None]]
+        for i in range(8):
+            for j in range(8):
+                if self.table.matrix[y][x].move_able(j, i):
+                    matrix[j][i] = '⭐'
+
+        for i in range(8):
+            for j in range(8):
+                if matrix[j][i] != '⭐' and self.table.matrix[j][i] is not None :
+                    matrix[j][i] = self.table.matrix[j][i].symbol
+        print('ПОДСКАЗКА ДЛЯ ВАШЕГО ХОДА')
+        print('  a  b  c d  e f g  h')
+        for i in range(8):
+            print("", i + 1, end="")
+            for j in range(8):
+                if matrix[i][j] is not None:
+                    print(matrix[i][j], end=' ')
+                elif (i + j) % 2 == 0:
+                    print("⬜ ", end="")
+                else:
+                    print("⬛ ", end="")
+            print()
+
 
 class Checker(Checkers_figure):
 
@@ -122,6 +155,8 @@ class Game(object):
                 if y1 is False:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
                     continue
+
+                self.table.matrix[y1][x1].hint()
                 y2, x2 = self.coord_input(place='куда ходить')
                 if y2 is False:
                     print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
