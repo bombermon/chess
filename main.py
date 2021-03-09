@@ -299,11 +299,13 @@ class Pawn(Chess_figure):
 
         if self.color == "W":
             if x_start == 6 and (x_start - x_stop) in [1, 2] and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
-                    return able
-            elif (x_start - x_stop) == -1 and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
-                    return able
+                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
+                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+                        return able
+            elif (x_start - x_stop) == 1 and y_start == y_stop:
+                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
+                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+                        return able
             else:
                 pass
                 # Вверх вправо
@@ -320,11 +322,13 @@ class Pawn(Chess_figure):
 
         elif self.color == "B":
             if x_start == 1 and (x_start - x_stop) in [-1, -2] and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
-                    return able
+                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
+                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+                        return able
             elif (x_start - x_stop) == -1 and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].symbol != self.symbol:
-                    return able
+                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
+                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
+                        return able
             else:
                 pass
 

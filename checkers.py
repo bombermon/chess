@@ -174,6 +174,7 @@ class Game(object):
                         while narezka:
                             y1, x1 = y2, x2
                             print('Съели, если хотите съесть еще, пишите координату, иначе пишите "end"')
+                            self.table.matrix[y1][x1].hint()
                             correct_read = 0
                             while correct_read != 1:
                                 if correct_read == -1:
