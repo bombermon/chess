@@ -502,6 +502,7 @@ class Game(object):
         self.table = Table()
         self.turn = 1
         self.history = []
+        self.current_color = None
 
     def cancel_move(self):
         if self.turn != 1:
@@ -521,22 +522,24 @@ class Game(object):
                         return y, x
         return False, False
 
+    def current_color_check(self):
+        print("Ходят ", end="")
+
+        if self.turn % 2 == 1:
+            print("белые!")
+            self.current_color = 'W'
+        else:
+            self.current_color = 'B'
+            print("черные!")
+
     def play(self):
         Is_Won = False
         while not Is_Won:
-            game1.table.print()
             turn_done = False
-            print("Ходят ", end="")
-
-            if self.turn % 2 == 1:
-                print("белые")
-                current_color = 'W'
-            else:
-                current_color = 'B'
-                print("черные")
-
             while not turn_done:
                 try:
+                    game1.current_color_check()
+                    game1.table.print()
                     y1, x1 = self.coord_input(place='фигуры')
                     if y1 == -1:
                         self.cancel_move()
@@ -545,7 +548,7 @@ class Game(object):
                     if y1 is False:
                         print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
                         continue
-                    if self.table.matrix[y1][x1].color != current_color:
+                    if self.table.matrix[y1][x1].color != self.current_color:
                         print('Не трогайте, пожалуйста, чужие фигуры!')
                         continue
                     self.table.matrix[y1][x1].hint()
