@@ -327,17 +327,131 @@ class Pawn(Chess_figure):
             else:
                 pass
 
-            # Вверх вправо
+            # Вниз вправо
             if (y_start + 1) == y_stop and (x_start - 1) == x_stop:
                 if self.table.matrix[y_stop][x_stop] is not None:
                     if self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color:
                         return able
 
-                # Вверх влево
+                # Вниз влево
             if (y_start + 1) == y_stop and (x_start + 1) == x_stop:
                 if self.table.matrix[y_stop][x_stop] is not None:
                     if self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color:
                         return able
+
+
+class Dragon(Chess_figure):  # вперёд и по диагонали на 3 клетки
+
+    def __init__(self, Table, pos_y, pos_x, color):
+        super().__init__(Table, pos_y, pos_x, color)
+        if self.color == "W":
+            self.symbol = "D"
+        elif self.color == "B":
+            self.symbol = "d"
+
+    def move_able(self, y, x):
+        x_stop, y_stop = x, y
+        x_start, y_start = self.x, self.y
+        able = True
+
+        if self.color == "W":
+            if (y_start - y_stop) in [1, 2, 3] and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+            else:
+                pass
+                # Вверх вправо
+            if (y_start - 1) == y_stop and ((x_start - 1) == x_stop or (x_start + 1) == x_stop):
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+            elif (y_start - 2) == y_stop and ((x_start - 2) == x_stop or (x_start + 2) == x_stop):
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+            elif (y_start - 3) == y_stop and ((x_start - 3) == x_stop or (x_start + 3) == x_stop):
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+
+
+
+
+        elif self.color == "B":
+
+            if (y_start - y_stop) in [-1, -2, -3] and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None :
+                    return able
+
+            if (y_start + 1) == y_stop and ((x_start - 1) == x_stop or (x_start + 1) == x_stop):
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+            elif (y_start + 2) == y_stop and ((x_start - 2) == x_stop or (x_start + 2) == x_stop):
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+            elif (y_start + 3) == y_stop and ((x_start - 3) == x_stop or (x_start + 3) == x_stop):
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+
+
+
+
+class Gnome(Chess_figure):  # вперёд и вправо на одну или две клетки
+
+    def __init__(self, Table, pos_y, pos_x, color):
+        super().__init__(Table, pos_y, pos_x, color)
+        if self.color == "W":
+            self.symbol = "G"
+        elif self.color == "B":
+            self.symbol = "g"
+
+    def move_able(self, y, x):
+        x_stop, y_stop = x, y
+        x_start, y_start = self.x, self.y
+        able = True
+
+        if self.color == "W":
+            if (x_start - x_stop) in [-1, -2] and y_start == y_stop:
+                if self.table.matrix[y_stop][x_stop] is None :
+                    return able
+            elif (y_start - y_stop) in [1, 2] and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None :
+                    return able
+
+
+        elif self.color == "B":
+            if (x_start - x_stop) in [1, 2] and y_start == y_stop:
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
+            elif (y_start - y_stop) in [-1, -2] and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None :
+                    return able
+
+
+class Mole(Chess_figure):  # пролезает везде в радиусе двух клеток
+
+    def __init__(self, Table, pos_y, pos_x, color):
+        super().__init__(Table, pos_y, pos_x, color)
+        if self.color == "W":
+            self.symbol = "M"
+        elif self.color == "B":
+            self.symbol = "m"
+
+    def move_able(self, y, x):
+        x_stop, y_stop = x, y
+        x_start, y_start = self.x, self.y
+        able = True
+
+        if (x_start - x_stop) in [-1, -2, 1, 2] and y_start == y_stop:
+            return able
+        elif (y_start - y_stop) in [-1, -2, 1, 2] and x_start == x_stop:
+            return able
+            # Вверх вправо
+        if ((y_start + 1) == y_stop or (y_start - 1) == y_stop) and ((x_start + 1) == x_stop or (x_start - 1) == x_stop):
+            return able
+        elif ((y_start + 2) == y_stop or (y_start - 2) == y_stop) and ((x_start + 2) == x_stop or (x_start - 2) == x_stop):
+            return able
+
+
+
+
 
 
 class Table(object):
@@ -346,14 +460,14 @@ class Table(object):
         self.matrix = [
             [Rook(self, 0, 0, "B"), Knight(self, 0, 1, "B"), Bishop(self, 0, 2, "B"), Queen(self, 0, 3, "B"),
              King(self, 0, 4, "B"), Bishop(self, 0, 5, "B"), Knight(self, 0, 6, "B"), Rook(self, 0, 7, "B")],
-            [Pawn(self, 1, 0, "B"), Pawn(self, 1, 1, "B"), Pawn(self, 1, 2, "B"), Pawn(self, 1, 3, "B"),
-             Pawn(self, 1, 4, "B"), Pawn(self, 1, 5, "B"), Pawn(self, 1, 6, "B"), Pawn(self, 1, 7, "B")],
+            [Pawn(self, 1, 0, "B"), Pawn(self, 1, 1, "B"), Dragon(self, 1, 2, "B"), Gnome(self, 1, 3, "B"),
+             Mole(self, 1, 4, "B"), Pawn(self, 1, 5, "B"), Pawn(self, 1, 6, "B"), Pawn(self, 1, 7, "B")],
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None, None],
-            [Pawn(self, 6, 0, "W"), Pawn(self, 6, 1, "W"), Pawn(self, 6, 2, "W"), Pawn(self, 6, 3, "W"),
-             Pawn(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
+            [Pawn(self, 6, 0, "W"), Pawn(self, 6, 1, "W"), Dragon(self, 6, 2, "W"), Gnome(self, 6, 3, "W"),
+             Mole(self, 6, 4, "W"), Pawn(self, 6, 5, "W"), Pawn(self, 6, 6, "W"), Pawn(self, 6, 7, "W")],
             [Rook(self, 7, 0, "W"), Knight(self, 7, 1, "W"), Bishop(self, 7, 2, "W"), Queen(self, 7, 3, "W"),
              King(self, 7, 4, "W"), Bishop(self, 7, 5, "W"), Knight(self, 7, 6, "W"), Rook(self, 7, 7, "W")]]
 
