@@ -286,7 +286,6 @@ class Pawn(Chess_figure):
 
     def __init__(self, Table, pos_y, pos_x, color):
         super().__init__(Table, pos_y, pos_x, color)
-        self.type = "King"
         if self.color == "W":
             self.symbol = "♙"
         elif self.color == "B":
