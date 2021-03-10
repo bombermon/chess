@@ -292,56 +292,53 @@ class Pawn(Chess_figure):
         elif self.color == "B":
             self.symbol = "♟"
 
-    def move_able(self, x, y):
+    def move_able(self, y, x):
         x_stop, y_stop = x, y
-        x_start, y_start = self.y, self.x
+        x_start, y_start = self.x, self.y
         able = True
 
         if self.color == "W":
-            if x_start == 6 and (x_start - x_stop) in [1, 2] and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
-                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
-                        return able
-            elif (x_start - x_stop) == 1 and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
-                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
-                        return able
+            if y_start == 6 and (y_start - y_stop) == 2 and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None and self.table.matrix[y_stop - 1][x_stop] is None:
+                    return able
+            elif (y_start - y_stop) == 1 and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
             else:
                 pass
                 # Вверх вправо
-            for i in range(x_start - 1, -1, -1):
-                if (0 <= y_start + (x_start - i) <= 1) and self.table.matrix[i][y_start + (x_start - i)] is not None:
-                    able = False
-                    return able
+            if (y_start - 1) == y_stop and (x_start + 1) == x_stop:
+                if self.table.matrix[y_stop][x_stop] is not None:
+                    if self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color:
+                        return able
 
                 # Вверх влево
-            for i in range(x_start - 1, -1, -1):
-                if (0 <= y_start - (x_start - i) <= 1) and self.table.matrix[i][y_start - (x_start - i)] is not None:
-                    able = False
-                    return able
+            if (y_start - 1) == y_stop and (x_start - 1) == x_stop:
+                if self.table.matrix[y_stop][x_stop] is not None:
+                    if self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color:
+                        return able
 
         elif self.color == "B":
-            if x_start == 1 and (x_start - x_stop) in [-1, -2] and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
-                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
-                        return able
-            elif (x_start - x_stop) == -1 and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is not None and self.table.matrix[y_start][x_start] is not None:
-                    if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
-                        return able
+            if y_start == 1 and (y_start - y_stop) == -2 and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None and self.table.matrix[y_stop + 1][x_stop] is None:
+                    return able
+            elif (y_start - y_stop) == -1 and x_start == x_stop:
+                if self.table.matrix[y_stop][x_stop] is None:
+                    return able
             else:
                 pass
 
-                # Вниз вправо
-            for i in range(x_start + 1, 8):
-                if (0 <= y_start + (i - x_start) <= 1) and self.table.matrix[i][y_start + (i - x_start)] is not None:
-                    able = False
-                    return able
-                # Вниз влево
-            for i in range(x_start + 1, 8):
-                if (0 <= y_start - (i - x_start) <= 1) and self.table.matrix[i][y_start - (i - x_start)] is not None:
-                    able = False
-                    return able
+            # Вверх вправо
+            if (y_start + 1) == y_stop and (x_start - 1) == x_stop:
+                if self.table.matrix[y_stop][x_stop] is not None:
+                    if self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color:
+                        return able
+
+                # Вверх влево
+            if (y_start + 1) == y_stop and (x_start + 1) == x_stop:
+                if self.table.matrix[y_stop][x_stop] is not None:
+                    if self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color:
+                        return able
 
 
 class Table(object):
