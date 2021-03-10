@@ -28,13 +28,13 @@ class Chess_figure(object):
         x = self.x
         y = self.y
         matrix = [[None, None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None, None]]
+                  [None, None, None, None, None, None, None, None, None],
+                  [None, None, None, None, None, None, None, None, None],
+                  [None, None, None, None, None, None, None, None, None],
+                  [None, None, None, None, None, None, None, None, None],
+                  [None, None, None, None, None, None, None, None, None],
+                  [None, None, None, None, None, None, None, None, None],
+                  [None, None, None, None, None, None, None, None, None]]
         for i in range(8):
             for j in range(8):
                 if self.table.matrix[y][x].move_able(j, i):
@@ -42,7 +42,7 @@ class Chess_figure(object):
 
         for i in range(8):
             for j in range(8):
-                if matrix[j][i] != '⭐' and self.table.matrix[j][i] is not None :
+                if matrix[j][i] != '⭐' and self.table.matrix[j][i] is not None:
                     matrix[j][i] = self.table.matrix[j][i].symbol
         print('ПОДСКАЗКА ДЛЯ ВАШЕГО ХОДА')
         print('  a  b  c d  e f g  h')
@@ -56,7 +56,6 @@ class Chess_figure(object):
                 else:
                     print("⬛ ", end="")
             print()
-
 
 
 class Queen(Chess_figure):
@@ -377,7 +376,7 @@ class Dragon(Chess_figure):  # вперёд и по диагонали на 3 к
         elif self.color == "B":
 
             if (y_start - y_stop) in [-1, -2, -3] and x_start == x_stop:
-                if self.table.matrix[y_stop][x_stop] is None :
+                if self.table.matrix[y_stop][x_stop] is None:
                     return able
 
             if (y_start + 1) == y_stop and ((x_start - 1) == x_stop or (x_start + 1) == x_stop):
@@ -389,8 +388,6 @@ class Dragon(Chess_figure):  # вперёд и по диагонали на 3 к
             elif (y_start + 3) == y_stop and ((x_start - 3) == x_stop or (x_start + 3) == x_stop):
                 if self.table.matrix[y_stop][x_stop] is None:
                     return able
-
-
 
 
 class Gnome(Chess_figure):  # вперёд и вправо на одну или две клетки
@@ -409,10 +406,10 @@ class Gnome(Chess_figure):  # вперёд и вправо на одну или 
 
         if self.color == "W":
             if (x_start - x_stop) in [-1, -2] and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is None :
+                if self.table.matrix[y_stop][x_stop] is None:
                     return able
             elif (y_start - y_stop) in [1, 2] and x_start == x_stop:
-                if self.table.matrix[y_stop][x_stop] is None :
+                if self.table.matrix[y_stop][x_stop] is None:
                     return able
 
 
@@ -421,7 +418,7 @@ class Gnome(Chess_figure):  # вперёд и вправо на одну или 
                 if self.table.matrix[y_stop][x_stop] is None:
                     return able
             elif (y_start - y_stop) in [-1, -2] and x_start == x_stop:
-                if self.table.matrix[y_stop][x_stop] is None :
+                if self.table.matrix[y_stop][x_stop] is None:
                     return able
 
 
@@ -440,18 +437,32 @@ class Mole(Chess_figure):  # пролезает везде в радиусе д�
         able = True
 
         if (x_start - x_stop) in [-1, -2, 1, 2] and y_start == y_stop:
+            if self.table.matrix[y_stop][x_stop] is not None:
+                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                    able = False
+                    return able
             return able
         elif (y_start - y_stop) in [-1, -2, 1, 2] and x_start == x_stop:
+            if self.table.matrix[y_stop][x_stop] is not None:
+                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                    able = False
+                    return able
             return able
             # Вверх вправо
-        if ((y_start + 1) == y_stop or (y_start - 1) == y_stop) and ((x_start + 1) == x_stop or (x_start - 1) == x_stop):
+        if ((y_start + 1) == y_stop or (y_start - 1) == y_stop) and (
+                (x_start + 1) == x_stop or (x_start - 1) == x_stop):
+            if self.table.matrix[y_stop][x_stop] is not None:
+                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                    able = False
+                    return able
             return able
-        elif ((y_start + 2) == y_stop or (y_start - 2) == y_stop) and ((x_start + 2) == x_stop or (x_start - 2) == x_stop):
+        elif ((y_start + 2) == y_stop or (y_start - 2) == y_stop) and (
+                (x_start + 2) == x_stop or (x_start - 2) == x_stop):
+            if self.table.matrix[y_stop][x_stop] is not None:
+                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                    able = False
+                    return able
             return able
-
-
-
-
 
 
 class Table(object):
@@ -497,7 +508,6 @@ class Game(object):
             self.table = self.history.pop()
             self.turn -= 1
 
-
     def coord_input(self, place):
         let_2_dig = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
         coord = input(f'Введите координату {place}: ').split()
@@ -520,37 +530,45 @@ class Game(object):
 
             if self.turn % 2 == 1:
                 print("белые")
+                current_color = 'W'
             else:
+                current_color = 'B'
                 print("черные")
 
             while not turn_done:
-                y1, x1 = self.coord_input(place='фигуры')
-                if y1 == -1:
-                    self.cancel_move()
-                    turn_done = True
-                    continue
-                if y1 is False:
-                    print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
-                    continue
-                self.table.matrix[y1][x1].hint()
-                y2, x2 = self.coord_input(place='куда ходить')
-                if y2 is False:
-                    print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
-                    continue
-                a = False
-                if (self.table.matrix[y1][x1].color == "W" and self.turn % 2 == 1) or (
-                        self.table.matrix[y1][x1].color == "B" and self.turn % 2 == 0):
-                    print(self.table.matrix[y1][x1].symbol)
-                    a = self.table.matrix[y1][x1].move_able(y2, x2)
+                try:
+                    y1, x1 = self.coord_input(place='фигуры')
+                    if y1 == -1:
+                        self.cancel_move()
+                        turn_done = True
+                        continue
+                    if y1 is False:
+                        print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
+                        continue
+                    if self.table.matrix[y1][x1].color != current_color:
+                        print('Не трогайте, пожалуйста, чужие фигуры!')
+                        continue
+                    self.table.matrix[y1][x1].hint()
+                    y2, x2 = self.coord_input(place='куда ходить')
+                    if y2 is False:
+                        print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
+                        continue
+                    a = False
+                    if (self.table.matrix[y1][x1].color == "W" and self.turn % 2 == 1) or (
+                            self.table.matrix[y1][x1].color == "B" and self.turn % 2 == 0):
+                        print(self.table.matrix[y1][x1].symbol)
+                        a = self.table.matrix[y1][x1].move_able(y2, x2)
 
-                if a:
-                    self.history.append(copy.deepcopy(self.table))
-                    self.table.matrix[y1][x1].move(y2, x2)
-                    turn_done = True
-                    self.turn += 1
-                else:
-                    print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
-
+                    if a:
+                        self.history.append(copy.deepcopy(self.table))
+                        self.table.matrix[y1][x1].move(y2, x2)
+                        turn_done = True
+                        self.turn += 1
+                    else:
+                        print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
+                except:
+                    print('Давайте по новой')
+                    self.turn -= 1
 
 
 game1 = Game()
