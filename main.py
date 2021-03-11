@@ -150,9 +150,9 @@ class King(Chess_figure):
         x_stop, y_stop = x, y
         y_start, x_start = self.y, self.x
 
-        if (x_start != x_stop or y_start != y_stop) and abs(y_start - y_stop) < 2 and abs(x_start - x_stop) < 2:
-            if self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].color != self.color:
-                return True
+        if (x_start != x_stop or y_start != y_stop) and (abs(y_start - y_stop) < 2 and abs(x_start - x_stop)) < 2 and (
+                self.table.matrix[y_stop][x_stop] is None or self.table.matrix[y_stop][x_stop].color != self.color):
+            return True
         return False
 
 
@@ -571,7 +571,6 @@ class Game(object):
                         print("Некорректный ввод, можно еще раз, только нормально, пожалуйста?")
                 except:
                     print('Давайте по новой')
-                    self.turn -= 1
 
 
 game1 = Game()
