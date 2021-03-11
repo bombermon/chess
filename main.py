@@ -355,19 +355,22 @@ class Dragon(Chess_figure):  # вперёд и по диагонали на 3 к
 
         if self.color == "W":
             if (y_start - y_stop) in [1, 2, 3] and x_start == x_stop:
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                    and self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color):
                     return able
-            else:
-                pass
+
                 # Вверх вправо
-            if (y_start - 1) == y_stop and ((x_start - 1) == x_stop or (x_start + 1) == x_stop):
-                if self.table.matrix[y_stop][x_stop] is None:
+            elif (y_start - 1) == y_stop and ((x_start - 1) == x_stop or (x_start + 1) == x_stop):
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                 and self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color):
                     return able
             elif (y_start - 2) == y_stop and ((x_start - 2) == x_stop or (x_start + 2) == x_stop):
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                        and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
             elif (y_start - 3) == y_stop and ((x_start - 3) == x_stop or (x_start + 3) == x_stop):
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
 
 
@@ -376,17 +379,21 @@ class Dragon(Chess_figure):  # вперёд и по диагонали на 3 к
         elif self.color == "B":
 
             if (y_start - y_stop) in [-1, -2, -3] and x_start == x_stop:
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                 and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
 
-            if (y_start + 1) == y_stop and ((x_start - 1) == x_stop or (x_start + 1) == x_stop):
-                if self.table.matrix[y_stop][x_stop] is None:
+            elif (y_start + 1) == y_stop and ((x_start - 1) == x_stop or (x_start + 1) == x_stop):
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                   and self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color):
                     return able
             elif (y_start + 2) == y_stop and ((x_start - 2) == x_stop or (x_start + 2) == x_stop):
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                  and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
             elif (y_start + 3) == y_stop and ((x_start - 3) == x_stop or (x_start + 3) == x_stop):
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                    and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
 
 
@@ -406,19 +413,25 @@ class Gnome(Chess_figure):  # вперёд и вправо на одну или 
 
         if self.color == "W":
             if (x_start - x_stop) in [-1, -2] and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                   and self.table.matrix[y_stop][x_stop].color != self.table.matrix[y_start][x_start].color):
                     return able
+
+
             elif (y_start - y_stop) in [1, 2] and x_start == x_stop:
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                   and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
 
 
         elif self.color == "B":
             if (x_start - x_stop) in [1, 2] and y_start == y_stop:
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
             elif (y_start - y_stop) in [-1, -2] and x_start == x_stop:
-                if self.table.matrix[y_stop][x_stop] is None:
+                if (self.table.matrix[y_stop][x_stop] is None) or (self.table.matrix[y_stop][x_stop] is not None
+                   and self.table.matrix[y_stop][x_stop].color !=self.table.matrix[y_start][x_start].color):
                     return able
 
 
@@ -438,13 +451,13 @@ class Mole(Chess_figure):  # пролезает везде в радиусе д�
 
         if (x_start - x_stop) in [-1, -2, 1, 2] and y_start == y_stop:
             if self.table.matrix[y_stop][x_stop] is not None:
-                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
                     able = False
                     return able
             return able
         elif (y_start - y_stop) in [-1, -2, 1, 2] and x_start == x_stop:
             if self.table.matrix[y_stop][x_stop] is not None:
-                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
                     able = False
                     return able
             return able
@@ -452,14 +465,14 @@ class Mole(Chess_figure):  # пролезает везде в радиусе д�
         if ((y_start + 1) == y_stop or (y_start - 1) == y_stop) and (
                 (x_start + 1) == x_stop or (x_start - 1) == x_stop):
             if self.table.matrix[y_stop][x_stop] is not None:
-                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
                     able = False
                     return able
             return able
         elif ((y_start + 2) == y_stop or (y_start - 2) == y_stop) and (
                 (x_start + 2) == x_stop or (x_start - 2) == x_stop):
             if self.table.matrix[y_stop][x_stop] is not None:
-                if self.table.matrix[y_stop][x_stop].color and self.table.matrix[y_start][x_start].color:
+                if self.table.matrix[y_stop][x_stop].color == self.table.matrix[y_start][x_start].color:
                     able = False
                     return able
             return able
